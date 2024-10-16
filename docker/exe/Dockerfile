@@ -21,13 +21,13 @@ RUN mkdir /var/run/sshd && \
     echo 'root:toor' | chpasswd && \
     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-# Create and activate Python virtual environment
+# Upgrade pip globally
+RUN python3 -m pip install --upgrade pip
+
+# Create Python virtual environment
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Upgrade pip in the virtual environment
-RUN python3 -m pip install --upgrade pip
 
 # Copy initial .bashrc with virtual environment activation to a temporary location
 COPY .bashrc /etc/skel/.bashrc
