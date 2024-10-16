@@ -4,10 +4,10 @@ from agent import AgentConfig
 def initialize():
     # chat_llm = models.get_openai_chat(model_name="openai/gpt-4o-mini", temperature=0.8) 
     # main chat model used by agents (smarter, more accurate)
-    # chat_llm = models.get_openai_chat(model_name="llama3.1", temperature=0)
+    chat_llm = models.get_openai_chat(model_name="together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo", temperature=0.8)
     # chat_llm = models.get_ollama_chat(model_name="wizard-vicuna-uncensored:30b", temperature=0)
     # chat_llm = models.get_lmstudio_chat(model_name="lmstudio-community/Meta-Llama-3.1-8B-Instruct-GGUF", temperature=0)
-    chat_llm = models.get_openrouter_chat(model_name="anthropic/claude-3.5-sonnet", temperature=0.8)
+    # chat_llm = models.get_openrouter_chat(model_name="anthropic/claude-3.5-sonnet", temperature=0.8)
     # chat_llm = models.get_azure_openai_chat(deployment_name="gpt-4o-mini", temperature=0)
     # chat_llm = models.get_anthropic_chat(model_name="claude-3-5-sonnet-20240620", temperature=0)
     # chat_llm = models.get_google_chat(model_name="gemini-1.5-flash", temperature=0.8)
@@ -41,13 +41,13 @@ def initialize():
         # msgs_keep_end = 10,
         max_tool_response_length = 6000,
         response_timeout_seconds = 60,
-        code_exec_docker_enabled = False,
+        #code_exec_docker_enabled = False,
         code_exec_docker_name = "agent-zero",
         code_exec_docker_image = "bpawnzz/agent-zero:current",
         code_exec_docker_ports = { "22/tcp": 50022 },
         # code_exec_docker_volumes = { files.get_abs_path("work_dir"): {"bind": "/root", "mode": "rw"} },
         code_exec_ssh_enabled = True,
-        code_exec_ssh_addr = "localhost",
+        code_exec_ssh_addr = "100.71.229.63",
         code_exec_ssh_port = 50022,
         code_exec_ssh_user = "root",
         code_exec_ssh_pass = "toor",
