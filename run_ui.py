@@ -295,4 +295,4 @@ if __name__ == "__main__":
 
     # run the server on port from .env
     port = int(os.environ.get("WEB_UI_PORT", 0)) or None
-    app.run(request_handler=NoRequestLoggingWSGIRequestHandler, port=port)
+    app.run(request_handler=NoRequestLoggingWSGIRequestHandler,host="0.0.0.0",port=port)
