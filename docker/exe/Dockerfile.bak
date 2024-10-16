@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     npm \
     openssh-server \
     sudo \
-    gosu \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up SSH
@@ -28,7 +27,7 @@ RUN python3 -m venv $VIRTUAL_ENV
 # Copy initial .bashrc with virtual environment activation to a temporary location
 COPY .bashrc /etc/skel/.bashrc
 
-# Copy the modified initialize script
+# Copy the script to ensure .bashrc is in the root directory
 COPY initialize.sh /usr/local/bin/initialize.sh
 RUN chmod +x /usr/local/bin/initialize.sh
 
@@ -38,18 +37,7 @@ RUN $VIRTUAL_ENV/bin/pip install --upgrade pip
 # Expose SSH port
 EXPOSE 22
 
-# Create entrypoint script
-RUN echo '#!/bin/bash\n\
-if [ ! -z "$UID" ] && [ ! -z "$GID" ]; then\n\
-    groupadd -g $GID usergroup\n\
-    useradd -m -u $UID -g $GID -s /bin/bash username\n\
-    echo "username ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers\n\
-    cp /etc/skel/.bashrc /home/username/.bashrc\n\
-    chown username:usergroup /home/username/.bashrc\n\
-    exec gosu username:usergroup /usr/local/bin/initialize.sh\n\
-else\n\
-    exec /usr/local/bin/initialize.sh\n\
-fi' > /usr/local/bin/entrypoint.sh && chmod +x /usr/local/bin/entrypoint.sh
+# Init .bashrc
+CMD ["/usr/local/bin/initialize.sh"]
 
-# Use the new entrypoint script
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
