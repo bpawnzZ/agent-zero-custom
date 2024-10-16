@@ -1,0 +1,15 @@
+version: '3'
+services:
+  agent-zero:
+    container_name: agent-zero
+    hostname: agent-zero
+    volumes:
+      - ./work_dir:/root
+    networks:
+      - caddy_default
+    image: bpawnzz/agent-zero:current
+
+networks:
+  caddy_default:
+    external: true
+
