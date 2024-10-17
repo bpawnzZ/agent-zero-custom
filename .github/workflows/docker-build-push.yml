@@ -12,11 +12,11 @@ env:
 
 jobs:
   build-and-push:
-    runs-on: debian:bookworm-slim
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-      actions: read # Optional, but can be helpful.
+      actions: read
 
     steps:
     - name: Checkout repository
@@ -27,17 +27,18 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
-        password: ${{ secrets.PAT_TOKEN }} # Use your PAT here.
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Extract metadata (tags, labels) for Docker
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images : ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name : Build and push Docker image 
-      uses : docker/build-push-action@v4 
-      with :
-        context : ./docker/exe # Change this if your main Dockerfile is somewhere else!
-        push : true 
-        tags : ${{ steps.meta.outputs.tags }} 
+    - name: Build and push Docker image 
+      uses: docker/build-push-action@v4 
+      with:
+        context: .
+        push: true 
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
